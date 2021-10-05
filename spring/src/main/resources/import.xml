@@ -1,0 +1,19 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="hello" class="com.qs.demo.spring.Hello">
+        <constructor-arg value="test"/>
+        <constructor-arg value="test"/>
+    </bean>
+    <bean id="getBeanTest" class="com.qs.demo.spring.GetBeanTest">
+        <lookup-method name="getBean" bean="teacher"/>
+    </bean>
+    <bean id="teacher" class="com.qs.demo.spring.Teacher"/>
+    <bean id="student" class="com.qs.demo.spring.Student"/>
+    <bean id="testChangeMe" class="com.qs.demo.spring.TestChangeMe">
+        <replaced-method name="changeMe" replacer="testMethodReplacer"/>
+    </bean>
+    <alias name="testMethodReplacer" alias="test1"/>
+    <bean id="testMethodReplacer" class="com.qs.demo.spring.TestMethodReplacer"/>
+</beans>
