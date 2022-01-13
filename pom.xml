@@ -13,6 +13,7 @@
         <module>mybatis</module>
         <module>desig-pattern</module>
         <module>spring</module>
+        <module>thread</module>
     </modules>
 
     <properties>

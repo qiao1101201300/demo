@@ -16,4 +16,8 @@
     </bean>
     <alias name="testMethodReplacer" alias="test1"/>
     <bean id="testMethodReplacer" class="com.qs.demo.spring.TestMethodReplacer"/>
+
+    <bean id="carFactoryBean" class="com.qs.demo.spring.CarFactoryBean">
+        <property name="carInfo" value="10,100,1000"/>
+    </bean>
 </beans>
