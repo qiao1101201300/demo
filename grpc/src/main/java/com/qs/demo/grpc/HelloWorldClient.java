@@ -47,7 +47,7 @@ public class HelloWorldClient {
         StreamObserver<FileInfo> requestObserver = greeterStub.sendFile(new StreamObserver<Info>() {
             @Override
             public void onNext(Info info) {
-                System.out.println(""+info.getMsg());
+                System.out.println("" + info.getMsg());
             }
 
             @Override
@@ -64,13 +64,19 @@ public class HelloWorldClient {
         InputStream is = null;
         try {
             is = new FileInputStream(file);
-            byte[] buff = new byte[2048];
+            long size = 2048;
+            byte[] buff = new byte[Math.toIntExact(size)];
+            long max = file.length() / size;
+            long maxSize = file.length() % size;
+            int num = 0;
             int len;
-            int index = 0;
             while ((len = is.read(buff)) != -1) {
-                requestObserver.onNext(FileInfo.newBuilder().setName(file.getName()).setIndex(index).setSize(2048L)
+                if (num + 1 > max) {
+                    size = maxSize;
+                }
+                requestObserver.onNext(FileInfo.newBuilder().setName(file.getName()).setIndex(num).setSize(size)
                         .setArrs(ByteString.copyFrom(buff)).build());
-                index++;
+                num++;
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -95,7 +101,7 @@ public class HelloWorldClient {
 
     public static void main(String[] args) {
         HelloWorldClient client = new HelloWorldClient("127.0.0.1", 50051);
-        client.sendFile("C:\\Users\\qiaoshen\\Desktop\\输入格式-202220419.zip");
+        client.sendFile("D:\\IdeaProjects\\ht-data-generator\\upload\\task\\2_1518139567796912128\\result_file\\trajectory-1.out");
 //        client.test("aaa");
         try {
             client.shutdown();

@@ -29,10 +29,18 @@ public class GreeterImpl extends com.qs.demo.grpc.GreeterGrpc.GreeterImplBase {
                 try {
                     file = new File(System.getProperty("user.dir") + File.separator + fileInfo.getName());
                     writeFile = new RandomAccessFile(file, "rw");
-                    writeFile.seek(fileInfo.getIndex() * fileInfo.getSize());
-                    writeFile.write(fileInfo.getArrs().toByteArray());
+                    writeFile.seek((long) fileInfo.getIndex() * fileInfo.getArrs().size());
+                    writeFile.write(fileInfo.getArrs().toByteArray(), 0, (int) fileInfo.getSize());
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
+                } finally {
+                    if (writeFile != null) {
+                        try {
+                            writeFile.close();
+                        } catch (IOException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
                 }
             }
 
@@ -43,13 +51,6 @@ public class GreeterImpl extends com.qs.demo.grpc.GreeterGrpc.GreeterImplBase {
 
             @Override
             public void onCompleted() {
-                if (writeFile != null) {
-                    try {
-                        writeFile.close();
-                    } catch (IOException e) {
-                        System.out.println(e.getMessage());
-                    }
-                }
                 responseObserver.onNext(Info.newBuilder().setMsg(file.getAbsolutePath()).build());
                 responseObserver.onCompleted();
             }
