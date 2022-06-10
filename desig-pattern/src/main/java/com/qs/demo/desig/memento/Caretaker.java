@@ -7,7 +7,7 @@ public class Caretaker {
         this.status = status;
     }
 
-    public Memento ceateMemento() {
+    public Memento createMemento() {
         return new Memento(status);
     }
 

@@ -35,7 +35,7 @@ public class FixedOperation {
 
 }
 
-class Test1 {
+class Test1 extends Object {
     private String print;
     private int loopNum;
 

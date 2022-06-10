@@ -14,6 +14,8 @@
         <module>desig-pattern</module>
         <module>spring</module>
         <module>thread</module>
+        <module>mqtt</module>
+        <module>data-structure</module>
     </modules>
 
     <properties>

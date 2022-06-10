@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+
+    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
+    <property name="LOG_HOME" value="./logs/serverLogs"/>
+    <!--日志的形式-->
+    <property name="LogPattern" value="[%date{yyyy-MM-dd HH:mm:ss.SSS}] %X{logthreadId} %-5level %logger{80} %M-%L - %msg%n"/>
+    <property name="CHARSET" value="UTF-8"/>
+    <!--日志保留的最长时间-->
+    <property name="MaxHistory" value="30"/>
+    <property name="MaxFileSize" value="50MB"/>
+    <!-- 控制台输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 过滤掉 DEBUG 级别的日志 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出,%d:日期;%thread:线程名;%-5level：级别,从左显示5个字符宽度;%msg:日志消息;%n:换行符 -->
+            <pattern>${LogPattern}</pattern>
+            <charset>${CHARSET}</charset>
+        </encoder>
+    </appender>
+
+    <!-- 控制台输出INFO级别日志 -->
+    <appender name="FILEDEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/debug.log</file>
+          <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+              <!-- 日志文件保留天数-->
+              <MaxHistory>${MaxHistory}</MaxHistory>
+<!--              日志文件输出的文件名-->
+             <FileNamePattern>${LOG_HOME}/debug_%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                 <maxFileSize>${MaxFileSize}</maxFileSize>
+             </timeBasedFileNamingAndTriggeringPolicy>
+         </rollingPolicy>
+         <append>true</append>
+        <!-- 日志文件的文件最大大小和文件总数目 -->
+        <encoder
+                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LogPattern}</pattern>
+            <charset>${CHARSET}</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+    </appender>
+
+    <!-- 控制台输出INFO级别日志 -->
+    <appender name="FILEINFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 日志文件保留天数-->
+            <MaxHistory>${MaxHistory}</MaxHistory>
+            <!--              日志文件输出的文件名-->
+            <FileNamePattern>${LOG_HOME}/info_%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${MaxFileSize}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <append>true</append>
+        <encoder
+                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LogPattern}</pattern>
+            <charset>${CHARSET}</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+    </appender>
+    <!--WARN级别的日志-->
+    <appender name="FILEWARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/warn.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 日志文件保留天数-->
+            <MaxHistory>${MaxHistory}</MaxHistory>
+            <!--              日志文件输出的文件名-->
+            <FileNamePattern>${LOG_HOME}/warn%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${MaxFileSize}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <append>true</append>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LogPattern}</pattern>
+            <charset>${CHARSET}</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!--错误日志统一输出到这里 -->
+    <appender name="FILEERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> <!--日志文件输出的文件名 -->
+            <!-- 日志文件保留天数-->
+            <MaxHistory>${MaxHistory}</MaxHistory>
+            <FileNamePattern>${LOG_HOME}/error_%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${MaxFileSize}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <append>true</append>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder"> <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+            <pattern>${LogPattern}</pattern>
+            <charset>${CHARSET}</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+
+    <!-- mybatis日志打印-->
+    <logger name="org.apache.ibatis" level="DEBUG" />
+    <logger name="java.sql" level="DEBUG" />
+
+    <!--Mybatis log configure -->
+    <logger name="java.sql" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILEERROR"/>
+        <appender-ref ref="FILEWARN"/>
+    </logger>
+    <logger name="org.apache.ibatis" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILEERROR"/>
+        <appender-ref ref="FILEWARN"/>
+    </logger>
+    <logger name="org.apache.commons" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILEERROR"/>
+        <appender-ref ref="FILEWARN"/>
+    </logger>
+    <logger name="org.apache.shiro" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILEERROR"/>
+        <appender-ref ref="FILEWARN"/>
+    </logger>
+    <logger name="org.mybatis.spring" level="WARN" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILEERROR"/>
+        <appender-ref ref="FILEWARN"/>
+    </logger>
+    <!-- （改）过滤器，可以指定哪些包，哪个记录到等级， -->
+    <logger name="org.springframework" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILEERROR"/>
+        <appender-ref ref="FILEWARN"/>
+    </logger>
+    <!-- 全局，控制台遇到debug及以上级别就进行输出 -->
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILEERROR"/>
+        <appender-ref ref="FILEWARN"/>
+        <appender-ref ref="FILEINFO"/>
+        <appender-ref ref="FILEDEBUG"/>
+    </root>
+</configuration>
