@@ -16,6 +16,8 @@
         <module>thread</module>
         <module>mqtt</module>
         <module>data-structure</module>
+        <module>down-bilibili</module>
+
     </modules>
 
     <properties>
