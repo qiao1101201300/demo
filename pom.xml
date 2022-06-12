@@ -17,6 +17,7 @@
         <module>mqtt</module>
         <module>data-structure</module>
         <module>down-bilibili</module>
+        <module>docker-java</module>
 
     </modules>
 

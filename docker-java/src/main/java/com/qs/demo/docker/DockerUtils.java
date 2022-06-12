@@ -1,4 +1,4 @@
-package com.qs.demo.thread;
+package com.qs.demo.docker;
 
 import cn.hutool.json.JSONUtil;
 import com.github.dockerjava.api.DockerClient;
@@ -103,6 +103,16 @@ public class DockerUtils {
     }
 
     /**
+     * 删除容器
+     *
+     * @param id
+     * @throws URISyntaxException
+     */
+    public static void removeContainer(String id) throws URISyntaxException {
+        connect().removeContainerCmd(id).exec();
+    }
+
+    /**
      * 构建镜像
      *
      * @param buildImageCmd
@@ -185,7 +195,7 @@ public class DockerUtils {
     }
 
     public static void main(String[] args) throws URISyntaxException {
-        String imageId = "276dca6e11e8";
+        String imageId = "cc0789b9b085";
         DockerClient connect = null;
         try {
             connect = connect();
@@ -201,17 +211,20 @@ public class DockerUtils {
                 e.printStackTrace();
             }
         }
-        CreateContainerResponse container = createContainer(connect().createContainerCmd(imageId)
-                .withHostConfig(new HostConfig().withPortBindings(new PortBinding(Ports.Binding.bindPort(8010), new ExposedPort(8010)), new PortBinding(Ports.Binding.bindPort(8011), new ExposedPort(8011))))
-                .withEnv("SPRING_CLOUD_EUREKA_ZONE=http://192.168.110.108:8080/eureka/",
-                        "SERVER_PORT=8010",
+        ExposedPort exposedPort1 = new ExposedPort(8012);
+        ExposedPort exposedPort2 = new ExposedPort(8011);
+        CreateContainerCmd createContainerCmd = connect().createContainerCmd(imageId)
+                .withEnv("SPRING_CLOUD_EUREKA_ZONE=http://192.168.188.5:8080/eureka/",
+                        "SERVER_PORT=8012",
                         "MYSQL_URL=jdbc:mysql://192.168.110.21:3306/IRS_KNOWLEDGE_BASE?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&allowMultiQueries=true&zeroDateTimeBehavior=CONVERT_TO_NULL",
                         "MYSQL_USER=admin",
                         "MYSQL_PASSWORD=admin",
                         "REDIS_HOST=192.168.110.21",
                         "REDIS_PORT=6379",
-                        "SERVER_IP=192.168.110.21"));
-
+                        "SERVER_IP=192.168.110.21")
+                .withExposedPorts(exposedPort1, exposedPort2)
+                .withHostConfig(new HostConfig().withPortBindings(new PortBinding(Ports.Binding.bindPort(8012), exposedPort1), new PortBinding(Ports.Binding.bindPort(8011), exposedPort2)));
+        CreateContainerResponse container = createContainer(createContainerCmd);
         startContainer(container.getId());
 //        removeImage("3210f0c4aaf8");
     }
