@@ -210,7 +210,7 @@ public class DockerUtils {
                         "MYSQL_PASSWORD=admin",
                         "REDIS_HOST=192.168.110.21",
                         "REDIS_PORT=6379",
-                        "SPRING_PREFERRED_NETWORK=192.168.110.*"));
+                        "SERVER_IP=192.168.110.21"));
 
         startContainer(container.getId());
 //        removeImage("3210f0c4aaf8");
